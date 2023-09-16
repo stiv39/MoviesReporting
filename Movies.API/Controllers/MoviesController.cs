@@ -1,19 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Movies.API.Contracts;
+using Movies.API.Features.Movies;
 
 namespace Movies.API.Controllers;
 
 [Route("api/[controller]")]
 public class MoviesController : ControllerBase
 {
-    [HttpPost]
-    public IActionResult CreateMovie()
+    private readonly ISender _sender;
+
+    public MoviesController(ISender sender)
     {
-        return Ok();
+        _sender = sender;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateMovie(CreateMovieRequest request)
+    {
+        var command = request.Adapt<CreateMovie.Command>();
+
+        var result = await _sender.Send(command);
+
+        if(!result.IsSuccess)
+        {
+            return BadRequest();
+        }
+
+        return Ok(result.Id);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetMovie(Guid id)
+    public async Task<IActionResult> GetMovie(Guid id)
     {
-        return Ok();
+        var query = new GetMovie.Query(id);
+
+        var result = await _sender.Send(query);
+
+        if(!result.IsSuccess)
+        {
+            return NotFound();
+        }
+
+        return Ok(result?.Movie?.Adapt<MovieResponse>());
     }
 }
