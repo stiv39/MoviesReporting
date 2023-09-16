@@ -1,7 +1,9 @@
 using Carter;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Movies.Reporting.API.Database;
 using Movies.Reporting.API.Extensions;
+using Movies.Reporting.API.Features.Movies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,25 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var assembly = typeof(Program).Assembly;
 
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
+
+builder.Services.AddMassTransit(busConfigurator =>
+{
+    busConfigurator.SetKebabCaseEndpointNameFormatter();
+
+    busConfigurator.AddConsumer<MovieCreatedConsumer>();
+    busConfigurator.AddConsumer<MovieViewedConsumer>();
+
+    busConfigurator.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
+        {
+            h.Username(builder.Configuration["MessageBroker:Username"]);
+            h.Username(builder.Configuration["MessageBroker:Password"]);
+        });
+
+        configurator.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddCarter();
 

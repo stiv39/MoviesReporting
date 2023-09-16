@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using MassTransit;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Movies.API.Database;
+using Movies.Contracts;
 
 namespace Movies.API.Features.Movies;
 
@@ -19,10 +21,11 @@ public static class GetMovie
     internal sealed class Handler : IRequestHandler<Query, GetMovieResult>
     {
         private readonly ApplicationDbContext _dbContext;
-
-        public Handler(ApplicationDbContext dbContext)
+        private readonly IPublishEndpoint _publishEndpoint;
+        public Handler(ApplicationDbContext dbContext, IPublishEndpoint publishEndpoint)
         {
             _dbContext = dbContext;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<GetMovieResult> Handle(Query request, CancellationToken cancellationToken)
@@ -33,6 +36,12 @@ public static class GetMovie
             {
                 return new GetMovieResult(false, null);
             }
+
+            await _publishEndpoint.Publish(new MovieViewedEvent
+            {
+                Id = movieFromDb.Id,
+                ViewedOnUtc = DateTime.UtcNow,
+            });
 
             return new GetMovieResult(true, movieFromDb);
         }

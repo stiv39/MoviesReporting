@@ -2,6 +2,8 @@
 using Movies.API.Entities;
 using MediatR;
 using Movies.API.Database;
+using MassTransit;
+using Movies.Contracts;
 
 namespace Movies.API.Features.Movies;
 
@@ -38,11 +40,13 @@ public static class CreateMovie
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IValidator<Command> _validator;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public Handler(ApplicationDbContext dbContext, IValidator<Command> validator)
+        public Handler(ApplicationDbContext dbContext, IValidator<Command> validator, IPublishEndpoint publishEndpoint)
         {
             _dbContext = dbContext;
             _validator = validator;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<CreateMovieResult> Handle(Command request, CancellationToken cancellationToken)
@@ -65,7 +69,13 @@ public static class CreateMovie
             }; 
 
             await _dbContext.Movies.AddAsync(movieToAdd);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            await _publishEndpoint.Publish(new MovieCreatedEvent
+            {
+                Id = movieToAdd.Id,
+                CreatedOnUtc = movieToAdd.AddedOnUtc
+            });
 
             return new CreateMovieResult(true, movieId);
         }
