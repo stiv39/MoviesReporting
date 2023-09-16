@@ -28,7 +28,7 @@ builder.Services.AddMassTransit(busConfigurator =>
         configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
         {
             h.Username(builder.Configuration["MessageBroker:Username"]);
-            h.Username(builder.Configuration["MessageBroker:Password"]);
+            h.Password(builder.Configuration["MessageBroker:Password"]);
         });
 
         configurator.ConfigureEndpoints(context);

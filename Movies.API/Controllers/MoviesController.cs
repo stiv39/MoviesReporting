@@ -45,4 +45,12 @@ public class MoviesController : ControllerBase
 
         return Ok(result?.Movie?.Adapt<MovieResponse>());
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetMovies()
+    {
+        var result = await _sender.Send(new GetMovies.Query());
+
+        return Ok(result);
+    }
 }
