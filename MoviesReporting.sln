@@ -5,11 +5,13 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{292EC339-C670-486E-A59E-D661FBBAA14C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.API", "Movies.API\Movies.API.csproj", "{197CEAE6-2C34-4F52-837B-84045B786FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.API", "Movies.API\Movies.API.csproj", "{197CEAE6-2C34-4F52-837B-84045B786FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Reporting.API", "Movies.Reporting.API\Movies.Reporting.API.csproj", "{5D08D511-8CF4-4419-B321-540F48CAC7AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Reporting.API", "Movies.Reporting.API\Movies.Reporting.API.csproj", "{5D08D511-8CF4-4419-B321-540F48CAC7AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Contracts", "Movies.Contracts\Movies.Contracts.csproj", "{B4E72B3F-955B-42A2-B1C6-B0C8B34B1E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Contracts", "Movies.Contracts\Movies.Contracts.csproj", "{B4E72B3F-955B-42A2-B1C6-B0C8B34B1E69}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{52D7280D-0DF4-41B2-A0C7-224C00BB61F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{B4E72B3F-955B-42A2-B1C6-B0C8B34B1E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4E72B3F-955B-42A2-B1C6-B0C8B34B1E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4E72B3F-955B-42A2-B1C6-B0C8B34B1E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52D7280D-0DF4-41B2-A0C7-224C00BB61F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D7280D-0DF4-41B2-A0C7-224C00BB61F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D7280D-0DF4-41B2-A0C7-224C00BB61F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D7280D-0DF4-41B2-A0C7-224C00BB61F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
